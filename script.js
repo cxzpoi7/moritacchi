@@ -287,7 +287,7 @@ class Moritatchi {
             
             // 卵の画像を表示
             if (eggImage) {
-                eggImage.src = './images/characters/egg.png';
+                eggImage.src = 'images/characters/egg.png';
                 eggImage.style.display = 'block';
                 eggFallback.style.display = 'none';
             }
@@ -338,7 +338,7 @@ class Moritatchi {
 
             // 画像を表示
             if (characterImage) {
-                characterImage.src = `./images/characters/${imageFile}`;
+                characterImage.src = `images/characters/${imageFile}`;
                 characterImage.style.display = 'block';
                 characterFallback.style.display = 'none';
                 characterFallback.textContent = fallbackEmoji;
