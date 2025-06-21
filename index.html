@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#667eea">
+    <title>もりたっち - Virtual Pet Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <main class="game-main">
+            <div class="pet-display">
+                <div class="pet-container">
+                    <div class="pet-sprite" id="petSprite">
+                        <div class="egg" id="eggStage">
+                            <img src="images/characters/egg.png" alt="卵" class="character-image" id="eggImage">
+                            <div class="egg-fallback">🥚</div>
+                        </div>
+                        <div class="pet-character" id="petCharacter" style="display: none;">
+                            <img src="images/characters/normal.png" alt="もりたっち" class="character-image" id="characterImage">
+                            <div class="character-fallback" id="characterFallback">😊</div>
+                            
+                            <div class="speech-bubble" id="speechBubble" style="display: none;">
+                                <span id="speechText"></span>
+                            </div>
+                        </div>
+                        <div class="poop-container" id="poopContainer"></div>
+                    </div>
+
+                    <div class="pet-name" id="petName">もりたっち</div>
+                    <div class="pet-weight" id="petWeight">50.0 kg</div>
+
+                    <div class="status-bars">
+                        <div class="status-bar">
+                            <label>満腹度</label>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="hungerBar" style="width: 100%"></div>
+                            </div>
+                            <span class="bar-value" id="hungerValue">100</span>
+                        </div>
+                        <div class="status-bar">
+                            <label>筋力</label>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="muscleBar" style="width: 50%"></div>
+                            </div>
+                            <span class="bar-value" id="muscleValue">50</span>
+                        </div>
+                        <div class="status-bar">
+                            <label>ストレス</label>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="stressBar" style="width: 20%"></div>
+                            </div>
+                            <span class="bar-value" id="stressValue">20</span>
+                        </div>
+                        <div class="status-bar">
+                            <label>健康</label>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="healthBar" style="width: 100%"></div>
+                            </div>
+                            <span class="bar-value" id="healthValue">100</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mini-action-grid">
+                        <button class="mini-action-button" data-action="sukiya">
+                            <span class="mini-action-icon">🍚</span>
+                            <span class="mini-action-name">すき家</span>
+                        </button>
+                        <button class="mini-action-button" data-action="protein">
+                            <span class="mini-action-icon">💪</span>
+                            <span class="mini-action-name">プロテイン</span>
+                        </button>
+                        <button class="mini-action-button" data-action="sauna">
+                            <span class="mini-action-icon">🧖</span>
+                            <span class="mini-action-name">サウナ</span>
+                        </button>
+                        <button class="mini-action-button" data-action="workout">
+                            <span class="mini-action-icon">🏋️</span>
+                            <span class="mini-action-name">筋トレ</span>
+                        </button>
+                        <button class="mini-action-button" data-action="clean">
+                            <span class="mini-action-icon">🧹</span>
+                            <span class="mini-action-name">掃除</span>
+                        </button>
+                        <button class="mini-action-button" data-action="doctor">
+                            <span class="mini-action-icon">👨‍⚕️</span>
+                            <span class="mini-action-name">受診</span>
+                        </button>
+                        <button class="mini-action-button" data-action="biofermin">
+                            <span class="mini-action-icon">🦠</span>
+                            <span class="mini-action-name">ビオフェルミン</span>
+                        </button>
+                        <button class="mini-action-button" data-action="ramen">
+                            <span class="mini-action-icon">🍜</span>
+                            <span class="mini-action-name">家系ラーメン</span>
+                        </button>
+                        <button class="mini-action-button" data-action="running">
+                            <span class="mini-action-icon">🏃</span>
+                            <span class="mini-action-name">ランニング</span>
+                        </button>
+                    </div>
+                    
+                    <div class="save-info">
+                        <div class="save-status" id="saveStatus">自動保存中...</div>
+                        <button class="delete-save-btn" id="deleteSaveBtn">保存データ削除</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-log" id="gameLog">
+                <div class="log-header">
+                    <h3>ゲームログ</h3>
+                    <button class="clear-log" id="clearLog">クリア</button>
+                </div>
+                <div class="log-content" id="logContent"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

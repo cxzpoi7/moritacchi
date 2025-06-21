@@ -1,0 +1,412 @@
+/* Basic Reset & Font */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Layout Containers */
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-main {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex: 1;
+    align-items: stretch;
+}
+
+.pet-display {
+    flex: 0 0 400px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+    top: 20px;
+}
+
+.pet-container {
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.pet-sprite {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 500px;
+}
+
+.egg, .pet-character {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.character-image, .egg .character-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    animation: breathing 5s ease-in-out infinite;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    transition: all 0.3s ease;
+}
+
+.character-image.happy {
+    animation: happy-bob 2.5s ease-in-out infinite;
+}
+
+.character-image.hungry {
+    animation: hungry-tremble 1.5s linear infinite;
+}
+
+.character-image.sick {
+    animation: sick-shake 0.6s linear infinite;
+}
+
+.egg .character-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    animation: bounce 2s infinite;
+}
+
+.poop-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px;
+}
+
+.poop {
+    font-size: 1.5rem;
+    animation: bounce 1s;
+}
+
+.mini-action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.mini-action-button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 8px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mini-action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.mini-action-button:active {
+    transform: translateY(0);
+}
+
+.mini-action-icon {
+    font-size: 1.2rem;
+}
+
+.mini-action-name {
+    font-size: 0.7rem;
+    line-height: 1;
+}
+
+.character-fallback, .egg-fallback {
+    position: absolute;
+    font-size: 8rem;
+    display: none;
+}
+
+.speech-bubble {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 0.9rem;
+    max-width: 200px;
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+    z-index: 10;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid white;
+}
+
+.pet-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 10px;
+}
+
+.pet-weight {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
+    margin-top: 5px;
+}
+
+.save-info {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.save-status {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.delete-save-btn {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.delete-save-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.delete-save-btn:active {
+    transform: translateY(0);
+}
+
+/* Status Bars */
+.status-bars {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-bar label {
+    color: #555;
+    min-width: 50px;
+    font-size: 0.9rem;
+}
+
+.bar-container {
+    flex: 1;
+    height: 12px;
+    background: #f0f0f0;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+#hungerBar { background: linear-gradient(90deg, #ff6b6b, #ff8e8e); }
+#muscleBar { background: linear-gradient(90deg, #4ecdc4, #44a08d); }
+#stressBar { background: linear-gradient(90deg, #feca57, #ff9ff3); }
+#healthBar { background: linear-gradient(90deg, #48dbfb, #0abde3); }
+
+.bar-value {
+    min-width: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.action-panel {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    text-align: left;
+}
+
+.action-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.action-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.action-desc {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.game-log {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px 30px;
+}
+
+.log-content {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes breathing {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.03); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes happy-bob {
+    0% { transform: translateY(0px) rotate(-1.5deg); }
+    50% { transform: translateY(-10px) rotate(1.5deg); }
+    100% { transform: translateY(0px) rotate(-1.5deg); }
+}
+
+@keyframes hungry-tremble {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-1px); }
+    75% { transform: translateX(1px); }
+}
+
+@keyframes sick-shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-2px, 0px) rotate(1deg); }
+    30% { transform: translate(2px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-2px, 1px) rotate(0deg); }
+    70% { transform: translate(2px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+@media (max-width: 768px) {
+    .game-main {
+        flex-direction: column;
+    }
+    .pet-display {
+        position: static;
+        width: 100%;
+    }
+    .pet-sprite {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pet-sprite {
+        height: 300px;
+    }
+} 
