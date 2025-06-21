@@ -257,17 +257,32 @@ class Moritatchi {
     }
 
     updateUI() {
-        // Update status bars
+        // Update stats bars and values
+        this.stats.hunger = Math.max(0, this.stats.hunger);
         document.getElementById('hungerBar').style.width = `${this.stats.hunger}%`;
-        document.getElementById('muscleBar').style.width = `${this.stats.muscle}%`;
-        document.getElementById('stressBar').style.width = `${this.stats.stress}%`;
-        document.getElementById('healthBar').style.width = `${this.stats.health}%`;
+        document.getElementById('hungerValue').textContent = this.stats.hunger;
 
-        document.getElementById('hungerValue').textContent = Math.round(this.stats.hunger);
-        document.getElementById('muscleValue').textContent = Math.round(this.stats.muscle);
-        document.getElementById('stressValue').textContent = Math.round(this.stats.stress);
-        document.getElementById('healthValue').textContent = Math.round(this.stats.health);
+        this.stats.muscle = Math.max(0, this.stats.muscle);
+        document.getElementById('muscleBar').style.width = `${this.stats.muscle}%`;
+        document.getElementById('muscleValue').textContent = this.stats.muscle;
+
+        this.stats.stress = Math.max(0, this.stats.stress);
+        document.getElementById('stressBar').style.width = `${this.stats.stress}%`;
+        document.getElementById('stressValue').textContent = this.stats.stress;
+
+        this.stats.health = Math.max(0, this.stats.health);
+        document.getElementById('healthBar').style.width = `${this.stats.health}%`;
+        document.getElementById('healthValue').textContent = this.stats.health;
+
+        // Update weight
         document.getElementById('petWeight').textContent = `${this.weight.toFixed(1)} kg`;
+
+        // Update age
+        const ageInMilliseconds = Date.now() - this.birthTime;
+        const gameMonths = Math.floor(ageInMilliseconds / (1000 * 60)); // 1 real minute = 1 game month
+        const gameYears = Math.floor(gameMonths / 12);
+        const displayMonths = gameMonths % 12;
+        document.getElementById('petAge').textContent = `${gameYears}歳 ${displayMonths}ヶ月`;
 
         // Update character sprite
         this.updateCharacterSprite();
@@ -282,7 +297,7 @@ class Moritatchi {
         const characterFallback = document.getElementById('characterFallback');
 
         if (this.stage === 'egg') {
-            eggStage.style.display = 'block';
+            eggStage.style.display = 'flex';
             petCharacter.style.display = 'none';
             
             // 卵の画像を表示
@@ -293,7 +308,7 @@ class Moritatchi {
             }
         } else {
             eggStage.style.display = 'none';
-            petCharacter.style.display = 'block';
+            petCharacter.style.display = 'flex';
 
             // 状態に基づいて画像を決定
             let imageFile = 'normal.png';
@@ -454,11 +469,11 @@ class Moritatchi {
         
         // Weight decrease when hunger is 0
         if (this.stats.hunger <= 0) {
-            console.log(`Hunger is 0, decreasing weight by 2.0kg. Current weight: ${this.weight}`);
-            this.modifyWeight(-2.0); // Weight decreases much faster when starving
+            console.log(`Hunger is 0, decreasing weight by 0.67kg. Current weight: ${this.weight}`);
+            this.modifyWeight(-0.67); // Weight decreases much faster when starving (was -2.0)
         } else {
-            console.log(`Hunger is ${this.stats.hunger}, decreasing weight by 0.5kg. Current weight: ${this.weight}`);
-            this.modifyWeight(-0.5); // Normal weight decrease
+            console.log(`Hunger is ${this.stats.hunger}, decreasing weight by 0.17kg. Current weight: ${this.weight}`);
+            this.modifyWeight(-0.17); // Normal weight decrease (was -0.5)
         }
         
         // Stress increase if not cared for
@@ -504,6 +519,19 @@ class Moritatchi {
     }
 
     checkRandomEvents() {
+        // Poop generation
+        if (this.poopCount < 10 && Math.random() < 0.033) { // 3.3% chance per tick (was 10%)
+            this.addPoop();
+        }
+
+        // Random sickness
+        if (!this.isSick && Math.random() < 0.02) { // 2% chance per tick
+            this.isSick = true;
+            this.modifyStats({ health: -20, stress: 30 });
+            this.addLog('😵 もりたっちが突然病気になりました！「なんで急に...？痛い...」');
+            this.speak('なんで急に...？痛い...');
+        }
+
         const random = Math.random();
 
         // Pneumothorax event (rare, 2% chance)
@@ -533,7 +561,8 @@ class Moritatchi {
             'ラーメン食べたい！',
             'すき家行こうかな？',
             'エビオス錠飲もう...',
-            'ビオフェルミン効果あるかな？'
+            'ビオフェルミン効果あるかな？',
+            '人生とは自転車のようなものだ。倒れないようにするには、走り続けなければならないのだ...！' // 3列表示テスト用の長いセリフ
         ];
 
         const randomSpeech = speeches[Math.floor(Math.random() * speeches.length)];
