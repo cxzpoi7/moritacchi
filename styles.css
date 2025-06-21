@@ -25,14 +25,17 @@ body {
 
 .game-main {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 30px;
     margin-bottom: 30px;
-    flex: 1;
-    align-items: stretch;
+    padding: 0 20px;
 }
 
 .pet-display {
-    flex: 0 0 400px;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 500px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -41,8 +44,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: sticky;
-    top: 20px;
 }
 
 .pet-container {
