@@ -11,6 +11,9 @@ body {
     min-height: 100vh;
     color: #333;
     overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Layout Containers */
@@ -22,6 +25,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .game-main {
@@ -49,15 +53,20 @@ body {
 
 .pet-container {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 0;
     width: 100%;
 }
 
 .pet-sprite {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     width: 100%;
-    height: 500px;
+    height: 300px;
+    background-image: url('images/back.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
 }
 
 .egg, .pet-character {
@@ -168,15 +177,15 @@ body {
 
 .speech-bubble {
     position: absolute;
-    top: -60px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     background: white;
     padding: 10px 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    font-size: 0.9rem;
-    max-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    font-size: 0.7rem;
+    max-width: 280px;
     text-align: center;
     animation: fadeInUp 0.5s ease;
     z-index: 10;
@@ -185,12 +194,14 @@ body {
 .speech-bubble::after {
     content: '';
     position: absolute;
-    bottom: -8px;
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid white;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 12px solid white;
 }
 
 .pet-name {
@@ -200,14 +211,28 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-top: 10px;
+    margin-top: 0;
 }
 
 .pet-weight {
     font-size: 1rem;
     font-weight: 500;
     color: #555;
-    margin-top: 5px;
+    margin-top: 0;
+}
+
+.pet-meta-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.pet-age {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
 }
 
 .save-info {
