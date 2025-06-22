@@ -16,7 +16,7 @@ class Moritatchi {
         this.speechQueue = [];
         this.isSpeaking = false;
         this.poopCount = 0;
-        this.weight = 50.0;
+        this.weight = 5.0; // 卵段階で5kgに設定
         this.isMusicPlaying = false; // 音楽再生状態
         
         console.log('Game initialized with egg stage');
@@ -248,6 +248,7 @@ class Moritatchi {
         // Egg stage (first 10 seconds)
         if (this.stage === 'egg' && ageInSeconds >= 10) {
             this.stage = 'baby';
+            this.weight = 10.0; // 赤ちゃん段階で10kgに設定
             this.addLog('🥚 卵にヒビが...！');
             this.updateUI();
             return;
@@ -256,6 +257,7 @@ class Moritatchi {
         // Baby stage (next 10 seconds, from 10s to 20s total)
         if (this.stage === 'baby' && ageInSeconds >= 20) {
             this.stage = 'normal';
+            this.weight = 50.0; // 通常段階で50kgに設定
             this.addLog('🍼 赤ちゃんから成長しました！');
             this.updateUI();
             return;
@@ -651,7 +653,7 @@ class Moritatchi {
                 this.lastExercise = gameData.lastExercise || Date.now();
                 this.birthTime = gameData.birthTime || Date.now();
                 this.poopCount = gameData.poopCount || 0;
-                this.weight = gameData.weight || 50.0;
+                this.weight = gameData.weight || 5.0;
                 this.isMusicPlaying = gameData.isMusicPlaying === 'true';
                 
                 console.log(`Loaded game data. Stage: ${this.stage}, Birth time: ${this.birthTime}`);
