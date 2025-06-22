@@ -454,7 +454,7 @@ body {
     }
     .pet-display {
         width: 100%;
-        padding: 20px;
+        padding: 20px 8px;
     }
     .pet-sprite {
         height: 250px;
