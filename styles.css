@@ -12,6 +12,7 @@ body {
     color: #333;
     overflow-x: hidden;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -69,7 +70,7 @@ body {
     border-radius: 15px;
 }
 
-.egg, .pet-character {
+.egg, .pet-character, .baby {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     display: flex;
@@ -273,6 +274,19 @@ body {
     transform: translateY(0);
 }
 
+.music-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.music-toggle-btn:hover {
+    opacity: 1;
+}
+
 /* Status Bars */
 .status-bars {
     width: 100%;
@@ -309,9 +323,9 @@ body {
     transition: width 0.5s ease;
 }
 
-#hungerBar { background: linear-gradient(90deg, #ff6b6b, #ff8e8e); }
+#hungerBar { background: linear-gradient(90deg, #feca57, #ff9ff3); }
 #muscleBar { background: linear-gradient(90deg, #4ecdc4, #44a08d); }
-#stressBar { background: linear-gradient(90deg, #feca57, #ff9ff3); }
+#stressBar { background: linear-gradient(90deg, #ff6b6b, #ff8e8e); }
 #healthBar { background: linear-gradient(90deg, #48dbfb, #0abde3); }
 
 .bar-value {
@@ -419,6 +433,14 @@ body {
     100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 
+.version-info {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    width: 100%;
+}
+
 @media (max-width: 768px) {
     .game-main {
         flex-direction: column;
@@ -430,10 +452,17 @@ body {
     .pet-sprite {
         height: 400px;
     }
+    body {
+        padding: 10px;
+    }
 }
 
 @media (max-width: 480px) {
     .pet-sprite {
         height: 300px;
     }
+}
+
+.baby, .baby-fallback {
+    text-align: center;
 } 
