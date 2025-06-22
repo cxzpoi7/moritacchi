@@ -17,11 +17,13 @@ class Moritatchi {
         this.isSpeaking = false;
         this.poopCount = 0;
         this.weight = 50.0;
+        this.isMusicPlaying = false; // 音楽再生状態
         
         console.log('Game initialized with egg stage');
         
         this.loadGame();
         this.initializeUI();
+        this.initializeMusic(); // 音楽初期化メソッドを呼び出し
         this.startGameLoop();
     }
 
@@ -100,7 +102,48 @@ class Moritatchi {
         });
     }
 
+    initializeMusic() {
+        this.bgm = document.getElementById('bgm');
+        this.musicToggleBtn = document.getElementById('musicToggleBtn');
+
+        this.musicToggleBtn.addEventListener('click', () => this.toggleMusic());
+
+        // 保存された再生状態を復元
+        if (this.isMusicPlaying) {
+            this.playMusic();
+        } else {
+            this.pauseMusic();
+        }
+    }
+
+    playMusic() {
+        this.bgm.play().catch(e => console.warn("BGMの自動再生がブロックされました。ユーザー操作が必要です。"));
+        this.isMusicPlaying = true;
+        this.musicToggleBtn.textContent = '🎵';
+        localStorage.setItem('moritatchi_music_playing', 'true');
+    }
+
+    pauseMusic() {
+        this.bgm.pause();
+        this.isMusicPlaying = false;
+        this.musicToggleBtn.textContent = '🔇';
+        localStorage.setItem('moritatchi_music_playing', 'false');
+    }
+
+    toggleMusic() {
+        if (this.isMusicPlaying) {
+            this.pauseMusic();
+        } else {
+            this.playMusic();
+        }
+    }
+
     performAction(action) {
+        // 最初のユーザーアクションで音楽再生を試みる
+        if (!this.isMusicPlaying && localStorage.getItem('moritatchi_music_playing') !== 'false') {
+            this.playMusic();
+        }
+        
         const actions = {
             ramen: () => {
                 this.modifyStats({ hunger: 30, health: -5 });
@@ -196,30 +239,27 @@ class Moritatchi {
 
     checkEvolution() {
         const { hunger, muscle, stress, health } = this.stats;
-        const age = Date.now() - this.birthTime;
-        const ageInSeconds = age / 1000;
+        const ageInSeconds = (Date.now() - this.birthTime) / 1000;
 
-        // Debug logging
-        console.log(`Current stage: ${this.stage}, Age: ${ageInSeconds.toFixed(1)} seconds`);
-
-        // Egg stage (first 5 seconds) - only for new games
-        if (ageInSeconds < 5 && this.stage === 'egg') {
-            // Stay in egg stage for first 5 seconds
+        // Egg stage (first 10 seconds)
+        if (this.stage === 'egg' && ageInSeconds >= 10) {
+            this.stage = 'baby';
+            this.addLog('🥚 卵にヒビが...！');
+            this.updateUI();
             return;
         }
 
-        // Force evolution to normal after 5 seconds only if still in egg stage
-        if (ageInSeconds >= 5 && this.stage === 'egg') {
-            console.log('Evolving from egg to normal!');
+        // Baby stage (next 10 seconds, from 10s to 20s total)
+        if (this.stage === 'baby' && ageInSeconds >= 20) {
             this.stage = 'normal';
-            this.addLog('🌟 もりたっちが正常に進化しました！');
-            this.updateUI(); // Force UI update
+            this.addLog('🍼 赤ちゃんから成長しました！');
+            this.updateUI();
             return;
         }
 
-        // Evolution based on stats (only if not in egg stage)
-        if (this.stage === 'egg') {
-            return; // Don't evolve based on stats while in egg stage
+        // After baby stage, evolution is based on stats
+        if (this.stage === 'egg' || this.stage === 'baby') {
+            return; // Don't evolve based on stats during these early stages
         }
 
         let newStage = 'normal';
@@ -290,24 +330,23 @@ class Moritatchi {
 
     updateCharacterSprite() {
         const eggStage = document.getElementById('eggStage');
+        const babyStage = document.getElementById('babyStage');
         const petCharacter = document.getElementById('petCharacter');
-        const eggImage = document.getElementById('eggImage');
         const characterImage = document.getElementById('characterImage');
         const eggFallback = document.querySelector('.egg-fallback');
         const characterFallback = document.getElementById('characterFallback');
 
         if (this.stage === 'egg') {
             eggStage.style.display = 'flex';
+            babyStage.style.display = 'none';
             petCharacter.style.display = 'none';
-            
-            // 卵の画像を表示
-            if (eggImage) {
-                eggImage.src = 'images/characters/egg.png';
-                eggImage.style.display = 'block';
-                eggFallback.style.display = 'none';
-            }
+        } else if (this.stage === 'baby') {
+            eggStage.style.display = 'none';
+            babyStage.style.display = 'flex';
+            petCharacter.style.display = 'none';
         } else {
             eggStage.style.display = 'none';
+            babyStage.style.display = 'none';
             petCharacter.style.display = 'flex';
 
             // 状態に基づいて画像を決定
@@ -520,7 +559,7 @@ class Moritatchi {
 
     checkRandomEvents() {
         // Poop generation
-        if (this.poopCount < 10 && Math.random() < 0.033) { // 3.3% chance per tick (was 10%)
+        if (this.poopCount < 10 && Math.random() < 0.033) { // 3.3% chance per tick, and only if poop is less than 10
             this.addPoop();
         }
 
@@ -580,7 +619,8 @@ class Moritatchi {
             lastExercise: this.lastExercise,
             birthTime: this.birthTime,
             poopCount: this.poopCount,
-            weight: this.weight
+            weight: this.weight,
+            isMusicPlaying: this.isMusicPlaying
         };
 
         localStorage.setItem('moritatchi_save', JSON.stringify(gameData));
@@ -608,6 +648,7 @@ class Moritatchi {
                 this.birthTime = gameData.birthTime || Date.now();
                 this.poopCount = gameData.poopCount || 0;
                 this.weight = gameData.weight || 50.0;
+                this.isMusicPlaying = gameData.isMusicPlaying === 'true';
                 
                 console.log(`Loaded game data. Stage: ${this.stage}, Birth time: ${this.birthTime}`);
                 
