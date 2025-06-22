@@ -445,7 +445,7 @@ body {
 
 @media (max-width: 768px) {
     .game-container {
-        padding: 15px;
+        padding: 8px;
     }
     .game-main {
         flex-direction: column;
