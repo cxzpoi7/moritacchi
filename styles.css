@@ -465,7 +465,7 @@ body {
 
 @media (max-width: 480px) {
     .pet-sprite {
-        height: 300px;
+        height: 400px;
     }
 }
 
@@ -479,4 +479,4 @@ body {
     position: absolute;
     font-size: 8rem;
     display: none;
-} 
+}
