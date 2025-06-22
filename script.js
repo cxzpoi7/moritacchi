@@ -115,15 +115,14 @@ class Moritatchi {
             this.pauseMusic();
         }
 
-        // 最初のクリックで音楽を再生するフラグ
-        let isFirstClick = true;
-
-        document.body.addEventListener('click', () => {
-            if (isFirstClick) {
-                this.bgm.play().catch(e => console.error("BGMの再生に失敗しました:", e));
-                isFirstClick = false;
-            }
-        }, { once: true }); // イベントリスナーを一度だけ実行する
+        // ユーザーがまだ音楽設定を触っていない場合のみ、最初のクリックで再生を試みる
+        if (localStorage.getItem('moritatchi_music_playing') === null) {
+            document.body.addEventListener('click', () => {
+                if (!this.bgm.currentTime > 0) { // まだ再生が始まっていなければ
+                    this.playMusic();
+                }
+            }, { once: true });
+        }
     }
 
     playMusic() {
@@ -149,11 +148,6 @@ class Moritatchi {
     }
 
     performAction(action) {
-        // 最初のユーザーアクションで音楽再生を試みる
-        if (!this.isMusicPlaying && localStorage.getItem('moritatchi_music_playing') !== 'false') {
-            this.playMusic();
-        }
-        
         const actions = {
             ramen: () => {
                 this.modifyStats({ hunger: 30, health: -5 });
@@ -553,8 +547,8 @@ class Moritatchi {
             }
         }
 
-        // Poop generation
-        if (this.poopCount < 12 && Math.random() < 0.033) { // 3.3% chance per tick, and only if poop is less than 12
+        // Poop generation (this is consolidated from the previous check)
+        if (Math.random() < 0.3) { // 30% chance per tick
             this.addPoop();
         }
 
@@ -573,11 +567,6 @@ class Moritatchi {
     }
 
     checkRandomEvents() {
-        // Poop generation
-        if (this.poopCount < 10 && Math.random() < 0.033) { // 3.3% chance per tick, and only if poop is less than 10
-            this.addPoop();
-        }
-
         // Random sickness
         if (!this.isSick && Math.random() < 0.02) { // 2% chance per tick
             this.isSick = true;
@@ -682,6 +671,9 @@ class Moritatchi {
     }
 
     addPoop() {
+        if (this.poopCount >= 12) {
+            return; // Do not add more poop if the limit is reached
+        }
         this.poopCount++;
         this.renderPoop();
         this.saveGame();
