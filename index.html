@@ -21,6 +21,10 @@
                             <img src="images/characters/egg.png" alt="卵" class="character-image" id="eggImage">
                             <div class="egg-fallback">🥚</div>
                         </div>
+                        <div class="baby" id="babyStage" style="display: none;">
+                            <img src="images/characters/baby.png" alt="赤ちゃん" class="character-image" id="babyImage">
+                            <div class="baby-fallback">👶</div>
+                        </div>
                         <div class="pet-character" id="petCharacter" style="display: none;">
                             <img src="images/characters/normal.png" alt="もりたっち" class="character-image" id="characterImage">
                             <div class="character-fallback" id="characterFallback">😊</div>
@@ -109,6 +113,7 @@
                     </div>
                     
                     <div class="save-info">
+                        <button class="music-toggle-btn" id="musicToggleBtn">🎵</button>
                         <div class="save-status" id="saveStatus">自動保存中...</div>
                         <button class="delete-save-btn" id="deleteSaveBtn">保存データ削除</button>
                     </div>
@@ -123,6 +128,10 @@
             <div class="log-content" id="logContent"></div>
         </div>
     </div>
+
+    <audio id="bgm" src="bgm.mp3" loop></audio>
+
+    <div class="version-info">v1.5</div>
 
     <script src="script.js"></script>
 </body>
