@@ -14,7 +14,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 /* Layout Containers */
@@ -434,23 +434,30 @@ body {
 }
 
 .version-info {
-    margin-top: 20px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
-    text-align: center;
-    width: 100%;
+    color: rgba(255, 255, 255, 0.7);
+    z-index: 1000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
+    .game-container {
+        padding: 15px;
+    }
     .game-main {
         flex-direction: column;
+        gap: 20px;
+        padding: 0;
     }
     .pet-display {
-        position: static;
         width: 100%;
+        padding: 20px;
     }
     .pet-sprite {
-        height: 400px;
+        height: 250px;
     }
     body {
         padding: 10px;
