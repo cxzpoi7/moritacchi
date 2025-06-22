@@ -445,7 +445,7 @@ body {
 
 @media (max-width: 768px) {
     .game-container {
-        padding: 8px;
+        padding: 4px;
     }
     .game-main {
         flex-direction: column;
@@ -454,7 +454,7 @@ body {
     }
     .pet-display {
         width: 100%;
-        padding: 20px 8px;
+        padding: 20px 12px;
     }
     .pet-sprite {
         height: 250px;
