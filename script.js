@@ -340,17 +340,17 @@ class Moritatchi {
         const eggFallback = document.querySelector('.egg-fallback');
         const characterFallback = document.getElementById('characterFallback');
 
+        // Hide all stages by default
+        eggStage.style.display = 'none';
+        babyStage.style.display = 'none';
+        petCharacter.style.display = 'none';
+        characterFallback.style.display = 'none';
+
         if (this.stage === 'egg') {
             eggStage.style.display = 'flex';
-            babyStage.style.display = 'none';
-            petCharacter.style.display = 'none';
         } else if (this.stage === 'baby') {
-            eggStage.style.display = 'none';
             babyStage.style.display = 'flex';
-            petCharacter.style.display = 'none';
         } else {
-            eggStage.style.display = 'none';
-            babyStage.style.display = 'none';
             petCharacter.style.display = 'flex';
 
             // 状態に基づいて画像を決定
