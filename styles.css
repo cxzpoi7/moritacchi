@@ -459,13 +459,13 @@ body {
         height: 250px;
     }
     body {
-        padding: 10px;
+        min-height: -webkit-fill-available;
     }
 }
 
 @media (max-width: 480px) {
     .pet-sprite {
-        height: 200px;
+        height: 250px;
     }
 }
 
