@@ -483,7 +483,7 @@ class Moritatchi {
 
         // Poop generation (only after normal stage)
         setInterval(() => {
-            if (this.stage !== 'egg' && Math.random() < 0.7) { // Increased probability to 70%
+            if (this.stage !== 'egg' && Math.random() < 0.35) { // Reduced probability from 70% to 35%
                 this.addPoop();
                 this.addLog('💩 もりたっちがうんこをしました...');
             }
@@ -548,7 +548,7 @@ class Moritatchi {
         }
 
         // Poop generation (this is consolidated from the previous check)
-        if (Math.random() < 0.3) { // 30% chance per tick
+        if (Math.random() < 0.15) { // Reduced from 30% to 15% chance per tick
             this.addPoop();
         }
 
@@ -581,7 +581,7 @@ class Moritatchi {
         if (random < 0.02 && !this.isPneumothorax) {
             this.isPneumothorax = true;
             this.modifyStats({ health: -20, stress: 30 });
-            this.addLog('😵 もりたっちが突然気胸になりました！「なんで急に...？痛い...」');
+            this.addLog('�� もりたっちが突然気胸になりました！「なんで急に...？痛い...」');
             this.speak('なんで急に...？痛い...');
         }
 
