@@ -114,6 +114,16 @@ class Moritatchi {
         } else {
             this.pauseMusic();
         }
+
+        // 最初のクリックで音楽を再生するフラグ
+        let isFirstClick = true;
+
+        document.body.addEventListener('click', () => {
+            if (isFirstClick) {
+                this.bgm.play().catch(e => console.error("BGMの再生に失敗しました:", e));
+                isFirstClick = false;
+            }
+        }, { once: true }); // イベントリスナーを一度だけ実行する
     }
 
     playMusic() {
@@ -541,6 +551,11 @@ class Moritatchi {
                 this.addLog('🤢 部屋が汚すぎて病気になりました...');
                 this.speak('体がだるい...');
             }
+        }
+
+        // Poop generation
+        if (this.poopCount < 12 && Math.random() < 0.033) { // 3.3% chance per tick, and only if poop is less than 12
+            this.addPoop();
         }
 
         this.saveGame();
